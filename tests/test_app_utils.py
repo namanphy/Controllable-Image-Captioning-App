@@ -7,7 +7,7 @@ import torch.nn as nn
 
 from easydict import EasyDict as edict
 from src.app_utils import read_json
-from src.app_utils import setup_models, setup_image, setup_tokenizer
+from src.app_utils import setup_models, open_image, tfms_image, setup_tokenizer
 from src.app_utils import predict_one_caption
 
 
@@ -31,8 +31,9 @@ def encoder_decoder():
 
 @pytest.fixture(scope = 'module')
 def image():
-    img_fn = './tests/test_image.jpg'
-    img = setup_image(img_fn)
+    img_fn = './demo/test_image.jpg'
+    img = open_image(img_fn)
+    img = tfms_image(img)
 
     img_shape = [s for s in img.shape]
     assert isinstance(img, torch.Tensor)

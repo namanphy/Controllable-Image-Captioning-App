@@ -24,7 +24,7 @@ def read_json(json_path):
 def setup_models(cfg, is_cuda):
     encoder, decoder = get_encoder_decoder(cfg)
     
-    device = torch.device('cuda' if is_cuda and torch.cuda_is_available() else 'cpu')
+    device = torch.device('cuda' if is_cuda and torch.cuda.is_available() else 'cpu')
     encoder.to(device)
     decoder.to(device)
     encoder.eval()
@@ -38,16 +38,20 @@ def setup_tokenizer():
     return tokenizer
 
 
-def setup_image(img_fn):
+def open_image(img_fn):
     img = cv2.imread(img_fn)
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
     if len(img) == 2:
         img = img[:, :, np.newaxis]
         img = np.concatenate([img, img, img], axis = 2)
     img = cv2.resize(img, (256, 256))
-    img = img.transpose(2, 0, 1)
-    assert img.shape == (3, 256, 256)
 
+    assert img.shape == (256, 256, 3)
+    return img
+
+
+def tfms_image(img):
+    img = img.transpose(2, 0, 1)
     img = torch.FloatTensor(img / 255.)
     normalizer = transforms.Normalize(mean = [0.485, 0.456, 0.406],
                                       std = [0.229, 0.224, 0.225])
