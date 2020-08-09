@@ -14,7 +14,6 @@ import numpy as np
 from data.utils import write_json, read_json
 from src.input_utils import create_nonimage_input
 from src.word_map_utils import create_word_map_from_simple, create_word_map_from_pretrained_wordpiece
-#STYLE_META_FILE = '/media/alex/Data/personal/Project/MadeWithML_Incubator/data/instagram/partition/meta_data/v1/meta_all.csv'
 
 
 def create_input_files(dataset, karpathy_json_path, image_folder, min_word_freq, 

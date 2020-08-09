@@ -4,7 +4,7 @@
   "data_name": "flickr8k_1_cap_per_img_1_min_word_freq",
   "checkpoint_file": null,
   "word_embedding_weight": null,
-  "word_map_file": "/userhome/34/h3509807/MadeWithML/a-PyTorch-Tutorial-to-Image-Captioning/data/meta_wstyle/data_mid_clean_wonumber/WORDMAP_flickr8k_1_cap_per_img_1_min_word_freq.json",
+  "word_map_file": "./ckpts/WORDMAP_flickr8k_1_cap_per_img_1_min_word_freq.json",
   "attention_dim": 512,
   "emb_dim": 200,
   "decoder_dim": 512,
