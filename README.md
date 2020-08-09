@@ -20,10 +20,11 @@ Run app.py using below command to start the Streamlit app.
 ```
 streamlit run app.py
 ```
-This would create a serialized version of our model into a file model.pkl
 
-By default, Streamlit will run on port 8501.
+navigate to URL http://localhost:8501 for our UI (Streamlit runs on port 8501 by default)
 
-2. Navigate to URL http://localhost:8501
 
-3. Proceed to upload the image and wait for results.
+### Running Unit Test
+```
+pytest -s tests
+```
