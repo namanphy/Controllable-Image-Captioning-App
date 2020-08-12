@@ -32,7 +32,7 @@ def encoder_decoder():
 @pytest.fixture(scope = 'module')
 def image():
     img_fn = './demo/test_image.jpg'
-    img = open_image(img_fn)
+    img = open_image(img_fn, demo_flag=True)
     img = tfms_image(img)
 
     img_shape = [s for s in img.shape]
