@@ -6,6 +6,7 @@ import numpy as np
 import torch
 from easydict import EasyDict as edict
 import streamlit as st
+from PIL import Image
 
 from src.app_utils import *
 st.set_option('deprecation.showfileUploaderEncoding', False)
@@ -68,9 +69,9 @@ img_buffer = st.sidebar.file_uploader(
     type = ['png', 'jpg', 'jpeg']
 )
 
-img_fn = img_buffer if img_buffer is not None else DEMO_IMAGE
-np_img = open_image(img_fn)
-st.image(np_img, use_column_width = True)
+img_fn, demo_flag = (img_buffer, False) if img_buffer is not None else (DEMO_IMAGE, True)
+np_img = open_image(img_fn, demo_flag)
+st.image(Image.open(img_fn), use_column_width=True)
 
 
 # run model and propagate to frontend
@@ -89,4 +90,5 @@ caption = tokenizer.decode(pred_enc)
 
 
 # load and show generated caption to frontend
-st.markdown(caption)
+st.write('')
+st.markdown("**Here is your caption** : " + caption)

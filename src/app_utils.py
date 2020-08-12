@@ -38,8 +38,13 @@ def setup_tokenizer():
     return tokenizer
 
 
-def open_image(img_fn):
-    img = cv2.imread(img_fn)
+def open_image(img_fn, demo_flag):
+    if demo_flag:
+        img = cv2.imread(img_fn)
+    else:
+        img = cv2.imdecode(np.fromstring(img_fn.read(), np.int8), 1)
+    # from pdb import set_trace
+    # set_trace()
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
     if len(img) == 2:
         img = img[:, :, np.newaxis]
