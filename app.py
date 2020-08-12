@@ -4,6 +4,7 @@ import time
 import cv2
 import numpy as np
 import torch
+from easydict import EasyDict as edict
 import streamlit as st
 
 from src.app_utils import *
@@ -22,7 +23,8 @@ def get_models():
     cfg = read_json(CONFIG_FILE)
     cfg = edict(cfg)
     cfg.checkpoint_file = CHECKPOINT_FILE
-    encoder, decoder = setup_models(cfg, is_cuda = IS_CUDA)
+    cfg.word_map_file = WORD_MAP_FILE
+    encoder, decoder = setup_models(cfg, is_cuda=IS_CUDA)
     print('model received')
     return encoder, decoder
 
@@ -40,6 +42,7 @@ def get_word_maps():
     rev_word_map = {v: k for k, v in word_map.items()}
     print('word map received')
     return word_map, rev_word_map
+
 
 encoder, decoder = get_models()
 device = torch.device('cuda' if next(encoder.parameters()).is_cuda else 'cpu')
