@@ -43,7 +43,9 @@ docker run -d -p 8501:8501 ctrl-img-cap-streamlit:latest
 ```
 And navigate to URL **http://localhost:8501** for the app. *(Streamlit runs on port 8501 by default)*
 
-#### Installation
+*Note : When you'll run the container for the first time it will download a resnet101 model.*
+
+### Installation
 **Alternatively for development you can create and manage a python environment** : 
 
 Make a python3.6 environment *(either pipenv or conda env)*, install requirements.
@@ -57,9 +59,7 @@ And, run `app.py` using below command to start the Streamlit app.
 streamlit run app.py
 ```
 
-"https://download.pytorch.org/models/resnet101-5d3b4d8f.pth" to /root/.cache/torch/checkpoints/resnet101-5d3b4d8f.pth
-
-#### Running Unit Test
+### Running Unit Test
 ```
 pytest -s tests
 ```
