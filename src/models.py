@@ -21,8 +21,8 @@ def get_encoder_decoder(cfg):
 
     if cfg.checkpoint_file is not None:
         assert os.path.isfile(cfg.checkpoint_file)
-        print(f'load in checkpoint: {cfg.checkpoint_file}')
-        checkpoint = torch.load(cfg.checkpoint_file)
+        print(f'load in checkpoint in CPU: {cfg.checkpoint_file}')
+        checkpoint = torch.load(cfg.checkpoint_file, map_location = lambda storage, loc: storage)
         encoder.load_state_dict(checkpoint['encoder'])
         decoder.load_state_dict(checkpoint['decoder'])
     return encoder, decoder
