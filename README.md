@@ -1,11 +1,19 @@
-<div style="align:left">
-
-# Stylised Controllable Image Captioning App
-
-[![release](https://img.shields.io/badge/current%20release-v0.1-blue)]()
-[![license](https://img.shields.io/badge/license-MIT-green)](https://github.com/namanphy/stylised-controllable-image-captioning-StreamlitApp/blob/master/LICENSE)
-
+<div align="center">
+  <img alt="title" src="assets/logo_diagram.png" width="100%">
 </div>
+
+<br>
+<p align="center">
+    <a href="https://img.shields.io/badge/current%20release-v0.1-blue">
+        <img alt="instagram" src="https://img.shields.io/badge/current%20release-v0.1-blue">
+    </a>
+    <a href="https://img.shields.io/badge/license-MIT-green">
+        <img alt="license" src="https://img.shields.io/badge/license-MIT-green">
+    </a>
+    <a href="https://www.python.org/">
+        <img alt="python" src="https://img.shields.io/badge/python%20-3.6%2B-blue">
+    </a>
+</p>
 
 ## Introduction
 Vanilla Image captioning model usually aims for factual precision but lack of engagement. Such goal limits the application 
