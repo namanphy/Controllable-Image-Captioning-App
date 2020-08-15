@@ -11,84 +11,95 @@ from PIL import Image
 from src.app_utils import *
 st.set_option('deprecation.showfileUploaderEncoding', False)
 
-DEMO_IMAGE = './demo/test_image.jpg'
+DEMO_IMAGE = './demo/demo_img1.jpg'
 CONFIG_FILE = './ckpts/config.json'
-CHECKPOINT_FILE = './ckpts/BEST_checkpoint_flickr8k_1_cap_per_img_1_min_word_freq.pth'
-WORD_MAP_FILE = './ckpts/WORDMAP_flickr8k_1_cap_per_img_1_min_word_freq.json'
 IS_CUDA = False
+BEAM_SIZE = 10
+SENTENCE_CLASS_MAP = {'Short Caption': 0, 'Mid Caption': 1, 'Long Caption': 2}
+EMOJI_CLASS_MAP = {'With Emoji': 1, 'Without Emoji': 0}
+PADDING_CODE = '&nbsp;'
+DEFAULT_PADDING = PADDING_CODE * 10
 
 
-# preset models and tokenizer
-@st.cache
+@st.cache(show_spinner = False, allow_output_mutation = True)
 def get_models():
-    cfg = read_json(CONFIG_FILE)
-    cfg = edict(cfg)
-    cfg.checkpoint_file = CHECKPOINT_FILE
-    cfg.word_map_file = WORD_MAP_FILE
-    encoder, decoder = setup_models(cfg, is_cuda=IS_CUDA)
+    cfg = edict(read_json(CONFIG_FILE))
+    encoder, decoder = setup_models(cfg, is_cuda = False)
     print('model received')
     return encoder, decoder
 
 
-@st.cache
+@st.cache(show_spinner = False, allow_output_mutation = True)
 def get_tokenizer():
-    tokenizer = setup_tokenizer()
+    tokenizer = setup_tokenizer(word_map)
     print('tokenizer received')
     return tokenizer
 
 
-@st.cache
+@st.cache(show_spinner = False, allow_output_mutation = True)
 def get_word_maps():
-    word_map = read_json(WORD_MAP_FILE)
+    cfg = edict(read_json(CONFIG_FILE))
+    word_map_file = cfg.word_map_file
+    word_map = read_json(word_map_file)
     rev_word_map = {v: k for k, v in word_map.items()}
     print('word map received')
     return word_map, rev_word_map
 
 
+# preset models and tokenizer etc.
 encoder, decoder = get_models()
 device = torch.device('cuda' if next(encoder.parameters()).is_cuda else 'cpu')
-tokenizer = get_tokenizer()
 word_map, rev_word_map = get_word_maps()
+tokenizer = get_tokenizer() # set tokenizer only after word_map
 
-
-st.title('Instagram-like Controllable Image Captioning')
 
 # user input on sidebar
-st.sidebar.header('User Control')
-st.sidebar.text(" \n")
-st.sidebar.text(" \n")
-st.sidebar.text("testing testing")
-emoji_class = st.sidebar.checkbox('add emoji') * 1
-sentence_class = st.sidebar.selectbox(
-    'sentence class', 
-    ('short', 'mid', 'long')
-)
-st.sidebar.text(" \n")
+st.sidebar.header('Step 1: Upload Image')
 img_buffer = st.sidebar.file_uploader(
-    'upload image (png/ jpg/ jpeg)', 
+    '',
     type = ['png', 'jpg', 'jpeg']
 )
+st.sidebar.text(" \n")
+st.sidebar.text(" \n")
 
+st.sidebar.header('Step 2: Select Your Flavors')
+st.sidebar.text(" \n")
+len_choices = tuple([k for k in SENTENCE_CLASS_MAP.keys()])
+sentence_class = st.sidebar.selectbox( '', len_choices)
+emoji_choices = tuple([k for k in EMOJI_CLASS_MAP.keys()])
+emoji_class = st.sidebar.selectbox('', emoji_choices)
+st.sidebar.text(" \n")
+st.sidebar.text(" \n")
+
+st.sidebar.header('Step 3: Generate Caption!')
+st.sidebar.text(" \n")
+is_run = st.sidebar.button('RUN')
+
+
+# propagate user input to model run
 img_fn, demo_flag = (img_buffer, False) if img_buffer is not None else (DEMO_IMAGE, True)
 np_img = open_image(img_fn, demo_flag)
-st.image(Image.open(img_fn), use_column_width=True)
+caption = emoji.emojize(f"{DEFAULT_PADDING} :backhand_index_pointing_left: {PADDING_CODE} Press RUN Button to Generate Caption")
+
+if is_run:
+    tensor_img = tfms_image(np_img)
+    sentence_class = SENTENCE_CLASS_MAP[sentence_class]
+    emoji_class = EMOJI_CLASS_MAP[emoji_class]
+
+    caption, pred_ids, _ = output_caption(
+        encoder, decoder, tensor_img, 
+        word_map, rev_word_map, tokenizer, 
+        sentence_class, emoji_class, beam_size = BEAM_SIZE
+    )
+    caption = f'{DEFAULT_PADDING} <b>CAPTION</b> {caption}'
 
 
-# run model and propagate to frontend
-tensor_img = tfms_image(np_img)
-class_map = {'short': 0, 'mid': 1, 'long': 2}
-sentence_class = class_map[sentence_class]
-sentence_class = torch.as_tensor([sentence_class]).long().to(device)
+# display
+h, w, _ = np_img.shape
+np_img = cv2.resize(np_img, (int(h * 2), int(w * 2)))
 
-predict = predict_one_caption(
-    encoder, decoder, tensor_img, word_map, 
-    len_class = sentence_class, beam_size = 10
-)
-predict = [rev_word_map[s] for s in predict]
-pred_enc = tokenizer.convert_tokens_to_ids(predict)
-caption = tokenizer.decode(pred_enc)
-
-
-# load and show generated caption to frontend
+st.image(Image.fromarray(np_img), use_column_width = False)
 st.write('')
-st.markdown("**Here is your caption** : " + caption)
+st.markdown(f""" <h3> {caption} </h3> """, 
+            unsafe_allow_html = True)
+
