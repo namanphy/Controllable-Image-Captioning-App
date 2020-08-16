@@ -30,6 +30,10 @@ This project has 4 major parts :
 3. `ckpts` - This folder contains model checkpoint, word map and configuration file for our model
 4. `demo` - This folder contains example images you can try out in our app
 
+<div align="center">
+  <img alt="architecture" src="assets/arch.png" width="100%">
+</div>
+
 
 ## Prerequisites
 Download the following files and place them into `ckpts` folder
