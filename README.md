@@ -63,12 +63,12 @@ cd stylised-controllable-image-captioning-StreamlitApp
 Make a python3.6 conda environment and install requirements:
 ```
 conda create -n app-env python=3.6
+conda activate app-env
 pip install -r requirements.txt
 ```
 
 Run below command to launch the Streamlit app:
 ```
-conda activate app-env
 streamlit run app.py
 ```
 
