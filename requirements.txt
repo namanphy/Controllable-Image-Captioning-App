@@ -7,3 +7,4 @@ streamlit==0.64.0
 easydict==1.9
 pytest==6.0.1
 opencv-python-headless
+emoji
