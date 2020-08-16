@@ -53,7 +53,7 @@ Navigate to http://localhost:8501 for the app. (Streamlit runs on port 8501 by d
 
 *Note : When you'll run the container for the first time it will download a resnet101 model. The Streamlit app is run in CPU.*
 
-To stop the cotainer :
+To stop the container :
 ```
 docker ps
 docker stop <containerId>
