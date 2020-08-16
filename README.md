@@ -40,7 +40,7 @@ Download the following files and place them into `ckpts` folder
 ## Install and Run in Docker
 Clone the repo and navigate to the repo:
 ```
-git clone https://github.com/namanphy/stylised-controllable-image-captioning-StreamlitApp.git
+git clone https://github.com/namanphy/Controllable-Image-Captioning-App.git
 cd stylised-controllable-image-captioning-StreamlitApp
 ```
 
@@ -56,7 +56,7 @@ Navigate to http://localhost:8501 for the app. (Streamlit runs on port 8501 by d
 ## Install and Run in Conda (Alternative)
 Clone the repo and navigate to the repo directory:
 ```
-git clone https://github.com/namanphy/stylised-controllable-image-captioning-StreamlitApp.git
+git clone https://github.com/namanphy/Controllable-Image-Captioning-App.git
 cd stylised-controllable-image-captioning-StreamlitApp
 ```
 
