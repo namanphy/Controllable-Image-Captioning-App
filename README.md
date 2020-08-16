@@ -44,7 +44,7 @@ git clone https://github.com/namanphy/Controllable-Image-Captioning-App.git
 cd stylised-controllable-image-captioning-StreamlitApp
 ```
 
-Build and run the docker image locally:
+Build the image and run the docker container locally:
 ```
 docker build -t ctrl-img-cap-streamlit:latest .
 docker run -d -p 8501:8501 ctrl-img-cap-streamlit:latest
@@ -52,6 +52,12 @@ docker run -d -p 8501:8501 ctrl-img-cap-streamlit:latest
 Navigate to http://localhost:8501 for the app. (Streamlit runs on port 8501 by default)
 
 *Note : When you'll run the container for the first time it will download a resnet101 model. The Streamlit app is run in CPU.*
+
+To stop the cotainer :
+```
+docker ps
+docker stop <containerId>
+```
 
 ## Install and Run in Conda (Alternative)
 Clone the repo and navigate to the repo directory:
