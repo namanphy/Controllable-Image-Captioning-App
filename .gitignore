@@ -1,12 +1,12 @@
-ckpts/*.pth
-ckpts/WORDMAP*.json
-ckpts/config.json
-ckpts/woemojis
+ckpts/*
 
 __pycache__
 */__pycache__
 */*/__pycache__
 
+tags
+
+.mypy_cache
 .pytest_cache
 .vscode
 .idea
